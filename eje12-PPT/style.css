@@ -1,0 +1,29 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    background-color: greenyellow;
+
+    #seleciona img{
+        background-color: yellow;
+        width: 241px;
+        height: 209px;
+        margin: 20px;
+    }
+    #selecionado {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 241px;
+        height: 209px;
+        & img{
+            background-color: yellow;
+            margin: 20px;
+        }
+    }
+}

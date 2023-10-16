@@ -26,4 +26,13 @@ body{
             margin: 20px;
         }
     }
+
+    #puntuacion{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 400px;
+        font-size: 30px;
+    }
 }

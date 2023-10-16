@@ -1,0 +1,100 @@
+:root{
+    --marginleft: 20px;
+}
+body{
+    margin: 0px;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100vw;
+}
+
+.eat, .play, .fight, .sleep{
+    width: 50%;
+    height: 50vh;
+}
+
+.eat, .fight{
+    & > * {
+        margin-left: var(--marginleft);
+    }
+}
+
+.play, .sleep{
+    & > * {
+        margin-right: var(--marginleft);
+    }
+}
+
+.eat{
+    background-color: rgb(195, 238, 130);
+}
+.play{
+    background-color: rgb(243, 243, 135);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.fight{
+    background-color: rgb(234, 91, 91);
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.sleep{
+    background-color: rgb(121, 196, 231);
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+#mascota{
+    position: absolute;
+    left: 43%;
+    top: 25%;
+}
+
+.dibujo{
+    display: flex;
+    flex-direction: row;
+    & p{
+        height: 28px;
+        width: 30px;
+        text-align: center;
+        background-color: white;
+        padding: 3px;
+        border-radius: 50px;
+        -webkit-border-radius: 50px;
+        -moz-border-radius: 50px;
+        -ms-border-radius: 50px;
+        -o-border-radius: 50px;
+    }
+}
+
+.vida{
+    display: flex;
+    align-items: center;
+    background-color: black;
+    height: 20px;
+    width: 80%;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+
+
+    & #vida{
+        width: 100%;
+        background-color: red;
+        height: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
+        border-radius: 20px;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        -ms-border-radius: 20px;
+        -o-border-radius: 20px;
+}
+}

@@ -1,0 +1,22 @@
+body{
+    background-color: black;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    color: white;
+}
+
+#bombilla{
+    height: 50vh;
+    align-self: center;
+}
+#ajuste{
+    display: flex;
+    flex-direction: column;
+}
+
+#boton{
+    width: 70px;
+    margin-top: 40px;
+    align-self: center;
+}

@@ -16,29 +16,29 @@ $($(document).ready(function () {
         if (vidasn[vidan] >= 0) {
             switch (vidan) {
                 case 0:
-                    if((vidasn[vidan] - 50) >= 0){
-                        vidasn[vidan]-= 50;
+                    if((vidasn[vidan] - 10) >= 0){
+                        vidasn[vidan]-= 10;
                     }else{
                         vidasn[vidan] = 0;
                     }
                     break;
                 case 1: 
-                    if((vidasn[vidan] - 50) >= 0){
-                        vidasn[vidan]-= 50;
+                    if((vidasn[vidan] - 5) >= 0){
+                        vidasn[vidan]-= 5;
                     }else{
                         vidasn[vidan] = 0;
                     }
                     break;
                 case 2: 
-                    if((vidasn[vidan] - 50) >= 0){
-                        vidasn[vidan]-= 50;
+                    if((vidasn[vidan] - 2) >= 0){
+                        vidasn[vidan]-= 2;
                     }else{
                         vidasn[vidan] = 0;
                     }
                     break;
                 case 3: 
-                    if((vidasn[vidan] - 50) >= 0){
-                        vidasn[vidan]-= 50;
+                    if((vidasn[vidan] - 1) >= 0){
+                        vidasn[vidan]--;
                     }else{
                         vidasn[vidan] = 0;
                     }

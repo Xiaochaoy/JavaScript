@@ -20,10 +20,12 @@ const breset = document.getElementById("breset");
 const bigual = document.getElementById("bigual");
 let numeroActual = "0";
 let decimal = false;
-let operacion = false;
 let calculado = false;
 let acalcular = [];
 let resultado = 0;
+let cantidadDecimal = 0;
+let dividir0 = false;
+let multipli0 = false;
 if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && bmenos && bpunto && bbarra && bx && breset && bigual && mostrar) {
     b0.addEventListener("click", function () {
         cero(0);
@@ -75,64 +77,71 @@ if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && 
     bdel.addEventListener("click", function () {
         if (numeroActual.length > 1) {
             numeroActual = numeroActual.slice(0, -1);
+            mostrar.innerHTML = numeroActual;
         }
         else {
-            numeroActual = "0";
+            numeroActual = "";
             acalcular = [];
             resultado = 0;
-            operacion = false;
+            cantidadDecimal = 0;
+            mostrar.innerHTML = "0";
+            dividir0 = false;
+            multipli0 = false;
         }
-        mostrar.innerHTML = numeroActual;
+        decimal = numeroActual.includes(".");
     });
     breset.addEventListener("click", function () {
-        numeroActual = "0";
+        numeroActual = "";
         acalcular = [];
         resultado = 0;
-        mostrar.innerHTML = numeroActual;
-        operacion = false;
+        mostrar.innerHTML = "0";
+        calculado = false;
+        decimal = false;
+        cantidadDecimal = 0;
+        dividir0 = false;
+        multipli0 = false;
     });
     bmas.addEventListener("click", function () {
-        operacion = true;
-        if (calculado) {
-            acalcular = [];
-            acalcular.push(resultado + "");
-        }
-        else {
-            acalcular.push(numeroActual);
-        }
-        numeroActual = "0";
-        mostrar.innerHTML = numeroActual;
+        agregarOperacion("suma");
+        mostrar.innerHTML = "0";
+    });
+    bmenos.addEventListener("click", function () {
+        agregarOperacion("resta");
+        mostrar.innerHTML = "0";
+    });
+    bx.addEventListener("click", function () {
+        agregarOperacion("multiplicacion");
+        mostrar.innerHTML = "0";
+    });
+    bbarra.addEventListener("click", function () {
+        agregarOperacion("dividir");
+        mostrar.innerHTML = "0";
     });
     bigual.addEventListener("click", function () {
-        if (numeroActual != "0") {
-            if (operacion) {
-                acalcular.push(numeroActual);
-                let cn = [];
-                for (let index = 0; index < acalcular.length; index++) {
-                    cn.push(parseInt(acalcular[index]));
-                }
-                for (let index = 0; index < acalcular.length;) {
-                    if (index === 0) {
-                        resultado = cn[index] + cn[index + 1];
-                        index += 2;
-                    }
-                    else {
-                        resultado += cn[index];
-                        index++;
-                    }
-                }
-                cn = [];
-                calculado = true;
-                mostrar.innerHTML = resultado + "";
-            }
-            else {
-                mostrar.innerHTML = "No hay ninguna operacion !";
-            }
+        if (numeroActual != "") {
+            acalcular.push(numeroActual);
+            resultado = parseFloat(parseFloat(evaluarExpresion(acalcular)).toFixed(cantidadDecimal));
+            calculado = true;
+            mostrar.innerHTML = resultado + "";
+            numeroActual = resultado + "";
+            decimal = numeroActual.includes(".");
         }
         else {
             mostrar.innerHTML = "Introduce algo no?";
         }
     });
+    function agregarOperacion(operador) {
+        if (calculado) {
+            acalcular = [];
+            calculado = false;
+        }
+        if (numeroActual !== "0") {
+            acalcular.push(numeroActual);
+            acalcular.push(operador);
+        }
+        numeroActual = "";
+        decimal = false;
+    }
     function cero(numero) {
         if (numeroActual === "0" || numeroActual === null) {
             numeroActual = numero + "";
@@ -144,6 +153,70 @@ if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && 
             else {
                 return;
             }
+        }
+    }
+    function evaluarExpresion(expresion) {
+        let operaciones = expresion.slice();
+        const operadores = ["multiplicacion", "dividir", "suma", "resta"];
+        for (let operador of operadores) {
+            while (operaciones.includes(operador)) {
+                const indice = operaciones.indexOf(operador);
+                const numero1 = parseFloat(operaciones[indice - 1]);
+                const numero2 = parseFloat(operaciones[indice + 1]);
+                let resultados = 0;
+                contarDigitosDecimal(numero1, numero2);
+                switch (operador) {
+                    case "multiplicacion":
+                        if (numero2 === 0 || numero1 === 0) {
+                            multipli0 = true;
+                        }
+                        resultados = numero1 * numero2;
+                        break;
+                    case "dividir":
+                        if (numero2 === 0 || numero1 === 0) {
+                            dividir0 = true;
+                        }
+                        resultados = numero1 / numero2;
+                        break;
+                    case "suma":
+                        resultados = numero1 + numero2;
+                        break;
+                    case "resta":
+                        resultados = numero1 - numero2;
+                        break;
+                }
+                operaciones.splice(indice - 1, 3, resultados + "");
+            }
+        }
+        return operaciones[0];
+    }
+    function contarDigitosDecimal(numero, numero2) {
+        const cadenaNumero = numero.toString();
+        const cadenaNumero2 = numero2.toString();
+        const indicePuntoDecimal = cadenaNumero.indexOf(".");
+        const indicePuntoDecimal2 = cadenaNumero2.indexOf(".");
+        if (indicePuntoDecimal !== -1 || indicePuntoDecimal2 !== -1) {
+            let n = cadenaNumero.length - indicePuntoDecimal - 1;
+            let n2 = cadenaNumero2.length - indicePuntoDecimal2 - 1;
+            if (cantidadDecimal === 0) {
+                if (n >= n2) {
+                    cantidadDecimal = n;
+                }
+                else {
+                    cantidadDecimal = n2;
+                }
+            }
+            else {
+                if (n > cantidadDecimal) {
+                    cantidadDecimal = n;
+                }
+                else if (n2 > cantidadDecimal) {
+                    cantidadDecimal = n2;
+                }
+            }
+        }
+        else {
+            cantidadDecimal = 0;
         }
     }
 }

@@ -25,6 +25,8 @@ let resultado: number = 0;
 let cantidadDecimal = 0;
 let dividir0 = false;
 let multipli0 = false;
+const style = document.getElementById("style") as HTMLInputElement;
+const calc = document.getElementById("calculadora");
 
 if(b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && bmenos && bpunto && bbarra && bx && breset && bigual && mostrar){
     b0.addEventListener("click", function(){
@@ -121,8 +123,16 @@ if(b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && b
             acalcular.push(numeroActual);
             resultado = parseFloat(parseFloat(evaluarExpresion(acalcular)).toFixed(cantidadDecimal));
             calculado = true;
-            mostrar.innerHTML= resultado+"";
-            numeroActual = resultado+"";    
+            if(multipli0){
+                mostrar.innerHTML= "No se puede multiplicar por 0";
+                multipli0 = false;
+            }else if(dividir0){
+                mostrar.innerHTML= "No se puede dividir entre 0";
+                dividir0 = false;
+            }else{
+                mostrar.innerHTML= resultado+"";
+                numeroActual = resultado+"";    
+            }
             decimal = numeroActual.includes(".");
         }else{
             mostrar.innerHTML= "Introduce algo no?";
@@ -174,7 +184,7 @@ if(b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && b
                         if (numero2 === 0 || numero1 === 0) {
                             dividir0 = true;
                         }
-                            resultados = numero1 / numero2;
+                        resultados = numero1 / numero2;
                         break;
                     case "suma":
                         resultados = numero1 + numero2;
@@ -216,4 +226,17 @@ if(b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && b
             cantidadDecimal= 0;
         }
     }
+}
+if (style && calc){
+    style.addEventListener("input", function(){
+        const valor = style.value;
+        calc.classList.remove("style1", "style2", "style3");
+        if(valor === "1"){
+            calc.classList.toggle("style1");
+        }else if(valor === "2"){
+            calc.classList.toggle("style2");
+        }else if(valor === "3"){
+            calc.classList.toggle("style3");
+        }
+    })
 }

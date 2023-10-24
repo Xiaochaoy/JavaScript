@@ -26,6 +26,8 @@ let resultado = 0;
 let cantidadDecimal = 0;
 let dividir0 = false;
 let multipli0 = false;
+const style = document.getElementById("style");
+const calc = document.getElementById("calculadora");
 if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && bmenos && bpunto && bbarra && bx && breset && bigual && mostrar) {
     b0.addEventListener("click", function () {
         cero(0);
@@ -122,8 +124,18 @@ if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && 
             acalcular.push(numeroActual);
             resultado = parseFloat(parseFloat(evaluarExpresion(acalcular)).toFixed(cantidadDecimal));
             calculado = true;
-            mostrar.innerHTML = resultado + "";
-            numeroActual = resultado + "";
+            if (multipli0) {
+                mostrar.innerHTML = "No se puede multiplicar por 0";
+                multipli0 = false;
+            }
+            else if (dividir0) {
+                mostrar.innerHTML = "No se puede dividir entre 0";
+                dividir0 = false;
+            }
+            else {
+                mostrar.innerHTML = resultado + "";
+                numeroActual = resultado + "";
+            }
             decimal = numeroActual.includes(".");
         }
         else {
@@ -219,4 +231,19 @@ if (b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && bdel && bmas && 
             cantidadDecimal = 0;
         }
     }
+}
+if (style && calc) {
+    style.addEventListener("input", function () {
+        const valor = style.value;
+        calc.classList.remove("style1", "style2", "style3");
+        if (valor === "1") {
+            calc.classList.toggle("style1");
+        }
+        else if (valor === "2") {
+            calc.classList.toggle("style2");
+        }
+        else if (valor === "3") {
+            calc.classList.toggle("style3");
+        }
+    });
 }

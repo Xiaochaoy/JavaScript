@@ -1,0 +1,39 @@
+body{
+    margin: 0px;
+
+    > div{
+        height: 50vh;
+    }
+}
+
+
+#piano{
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+
+    & button{
+        margin-left: 20px;
+        width: 100px;
+    }
+}
+#help{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100vw;
+    background-color: darkgrey;
+}
+#misicas{
+    width: 40vw;
+}
+#musica1, #musica2{
+    margin-bottom: 20px;
+}
+#pasitos{
+    width: 60vw;
+    align-self: center;
+}
+img{
+    width: 400px;
+}

@@ -6,6 +6,8 @@ let cate = "";
 let selectedButton = null;
 let loquebuscas = document.getElementById("search");
 const botonbuscar = document.getElementById("buscar");
+let tamaño = 0;
+let busquedaactual = "";
 var requestOptions = {
     method: 'GET',
     redirect: 'follow'
@@ -44,17 +46,42 @@ if (botonNext) {
         }
     });
 }
-if (botonbuscar && loquebuscas) {
-    const busqueda = encodeURIComponent(loquebuscas.value);
+if (botonbuscar) {
     botonbuscar.addEventListener("click", () => {
-        fetch("https://api.chucknorris.io/jokes/search?query=" + busqueda, requestOptions)
-            .then(response => {
-            if (!response.ok) {
-                throw new Error('请求失败'); // 在HTTP请求返回错误状态时抛出一个错误
+        if (loquebuscas.value !== "") {
+            if (loquebuscas.value !== busquedaactual) {
+                fetch("https://api.chucknorris.io/jokes/search?query=" + loquebuscas.value, requestOptions)
+                    .then(response => {
+                    if (!response.ok) {
+                        contenido.innerHTML = "Bad request";
+                    }
+                    return response.json();
+                })
+                    .then(data => {
+                    if (data.result && Array.isArray(data.result) && data.result.length > 0) {
+                        if (tamaño < data.result.length) {
+                            const chisteAleatorio = data.result[tamaño];
+                            contenido.innerHTML = chisteAleatorio.value;
+                            tamaño++;
+                        }
+                        else {
+                            contenido.innerHTML = "Ya no hay mas";
+                            tamaño = 0;
+                            busquedaactual = loquebuscas.value;
+                        }
+                    }
+                    else {
+                        contenido.innerHTML = "No he encontrado nada";
+                    }
+                })
+                    .catch(error => console.log('error', error));
             }
-            return response.json();
-        })
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
+            else {
+                contenido.innerHTML = "Te dije que ya no hay mas! CAMBIALO";
+            }
+        }
+        else {
+            contenido.innerHTML = "Pon algo no?";
+        }
     });
 }

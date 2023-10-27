@@ -1,12 +1,13 @@
-const boton1 = document.getElementById("b1");
-const boton2 = document.getElementById("b2");
-const boton3 = document.getElementById("b3");
-const boton4 = document.getElementById("b4");
+const boton1 = document.getElementById("b1") as HTMLButtonElement;
+const boton2 = document.getElementById("b2") as HTMLButtonElement;
+const boton3 = document.getElementById("b3") as HTMLButtonElement;
+const boton4 = document.getElementById("b4") as HTMLButtonElement;
 const botonr = document.getElementById("br");
 let pregunta = document.getElementById("pregunta");
 let footer = document.getElementById("cantidad");
 let re = document.getElementById("respuesta");
 let cab = document.getElementById("cabeza");
+const next =  document.getElementById("next");
 const botones: { [key: number]: HTMLElement | null} = {
     0: boton1,
     1: boton2,
@@ -21,10 +22,11 @@ const respuestas: string[][] = [
         ["java","js","css","c+"],
         ["78","68","88","98"]];
 const rCorrectas: string[] = ["word","c+","88"];
-const rSeleccionadas: string[] = [];
 let index = 0;
 const nuevoElemento = document.createElement("p");
 let end = false;
+let select = false;
+let puntos = 0;
 
 mostrar(index);
 
@@ -32,7 +34,7 @@ for (const i in botones) {
     if (botones.hasOwnProperty(i)) {
         const boton = botones[i];
         boton.addEventListener("click", () => {
-            seleccionado(Number(i));
+            seleccionado(Number(i), boton);
         });
     }
 }
@@ -41,6 +43,21 @@ if(botonr){
     botonr.addEventListener("click", function(){
         reiniciar();
     });
+}
+if(next){
+    next.addEventListener("click", function(){
+        select = false;
+        limpiar();
+        clicable();
+        if((index+1) < preguntas.length){
+            index++;
+            select = false;
+            mostrar(index);
+        }else{
+            next.style.display = "none";
+            result();
+        }
+    })
 }
 
 function mostrar(index: number) {
@@ -66,13 +83,25 @@ function mostrar(index: number) {
         footer.textContent = "Question " + (index+1) + " of " + preguntas.length
     }
 }
-function seleccionado(cual: number) {
-    rSeleccionadas[index] = respuestas[index][cual];
-    if((index+1) < preguntas.length){
-        index++;
-        mostrar(index);
+function seleccionado(cual: number, boton : HTMLElement | null) {
+    if(respuestas[index][cual] === rCorrectas[index]){
+        boton.style.backgroundColor = "green";
+        if(!select){
+            select = true;
+            puntos++;
+        }
     }else{
-        result();
+        boton.style.backgroundColor = "red";
+        const respuestaCorrectaIndex = respuestas[index].indexOf(rCorrectas[index]);
+        if (respuestaCorrectaIndex !== -1) {
+            botones[respuestaCorrectaIndex].style.backgroundColor = "green";
+        }
+        select = true;
+    }
+    clicable();
+
+    if(select){
+        next.style.display = "inline";
     }
 }
 function result() {
@@ -84,22 +113,34 @@ function result() {
 }
 
 function calcRe() {
-    let puntos = 0;
-    for (let i = 0; i < rCorrectas.length; i++) {
-        if (rCorrectas[i] === rSeleccionadas[i]) {
-            puntos++;
-        }
-    }
     nuevoElemento.textContent = "Your score: " + puntos;
-    
     return nuevoElemento;
 }
-
+function clicable(){
+    if(select){
+        boton1.disabled= true;
+        boton2.disabled= true;
+        boton3.disabled= true;
+        boton4.disabled= true;
+    }else{
+        boton1.disabled= false;
+        boton2.disabled= false;
+        boton3.disabled= false;
+        boton4.disabled= false;
+    }
+}
 function reiniciar() {
+    puntos = 0;
     showOno();
     mostrar(index);
 }
+function limpiar() {
+    boton1.style.backgroundColor = "rgb(6, 151, 151)";
+    boton2.style.backgroundColor = "rgb(6, 151, 151)";
+    boton3.style.backgroundColor = "rgb(6, 151, 151)";
+    boton4.style.backgroundColor = "rgb(6, 151, 151)";
 
+}
 function showOno() {
     if(cab &&pregunta && boton1 && boton2 && boton3 && boton4 && botonr && re && footer){
         if(!end){
